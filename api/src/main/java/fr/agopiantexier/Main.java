@@ -3,6 +3,9 @@ package fr.agopiantexier;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import io.javalin.Context;
 import io.javalin.Javalin;
 import okhttp3.FormBody;
@@ -37,6 +40,7 @@ public class Main {
         long period = 30*60000;
         String clientId = prop.getProperty("clientId");
         String secret = prop.getProperty("secretId");
+        String dbPath = prop.getProperty("dbPath");
         base64 = Base64.getEncoder().encodeToString((clientId+":"+secret).getBytes());
 
         refreshToken();
@@ -58,7 +62,13 @@ public class Main {
 
         Javalin app = Javalin.create().start(7000);
 
+        ConnectionSource source = new JdbcConnectionSource("jdbc:sqlite:"+ dbPath +"DecadesMasterDB.sqlite");
+
+        TableUtils.createTableIfNotExists(source, Account.class);
+
+
         app.get("/", Main::accueil);
+        app.get("/inscription", GameController.inscription);
 
 
     }
