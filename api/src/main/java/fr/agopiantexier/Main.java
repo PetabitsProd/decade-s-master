@@ -68,7 +68,7 @@ public class Main {
 
 
         app.get("/", Main::accueil);
-        app.get("/inscription", GameController.inscription);
+        app.post("/inscription", GameController.inscription);
 
 
     }

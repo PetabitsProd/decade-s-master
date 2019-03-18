@@ -14,8 +14,29 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Inscription {
-    public static void inscription(Context ctx) throws IOException, SQLException {
-        ctx.result("Inscription");
+    private String pseudo;
+    private String password;
+
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
+    }
+
+    public String getPseudo() {
+        return pseudo;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void inscription(String pseudo, String password) throws IOException, SQLException {
+        //ctx.result("Inscription");
+
+        System.out.println();
 
         Properties properties = new Properties();
         InputStream input = null;
@@ -30,8 +51,8 @@ public class Inscription {
                         , Account.class);
         System.out.println(accountDao.countOf());
         Account account = new Account();
-        account.setPseudo(":)");
-        account.setPassword("secret");
+        account.setPseudo(this.pseudo);
+        account.setPassword(this.password);
         accountDao.create(account);
     }
 }
