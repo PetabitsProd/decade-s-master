@@ -8,32 +8,31 @@ import com.j256.ormlite.support.ConnectionSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class Inscription {
-    private String pseudo;
-    private String password;
+public class Connexion {
 
-    public void setPseudo(String pseudo) {
-        this.pseudo = pseudo;
-    }
+    String pseudo, password;
 
     public String getPseudo() {
         return pseudo;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPseudo(String pseudo) {
+        this.pseudo = pseudo;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void inscription(String pseudo, String password) throws IOException, SQLException {
-        //ctx.result("Inscription");
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
+    public Utilisateur connexion() throws IOException, SQLException {
         System.out.println(pseudo + " et " + password);
 
         Properties properties = new Properties();
@@ -42,15 +41,15 @@ public class Inscription {
         properties.load(input);
         String dbPath = properties.getProperty("dbPath");
 
-        ConnectionSource source = new JdbcConnectionSource("jdbc:sqlite:"+ dbPath +"DecadesMasterDB.sqlite");
+        ConnectionSource source = new JdbcConnectionSource("jdbc:sqlite:" + dbPath + "DecadesMasterDB.sqlite");
 
-        Dao<Utilisateur, String> accountDao =
+        Dao<Utilisateur, String> userDao =
                 DaoManager.createDao(source
                         , Utilisateur.class);
-        System.out.println(accountDao.countOf());
         Utilisateur user = new Utilisateur();
         user.setPseudo(pseudo);
         user.setPassword(password);
-        accountDao.create(user);
+        Utilisateur utilisateurConnecte = userDao.queryForMatchingArgs(user).stream().findFirst().orElse(null);
+        return utilisateurConnecte;
     }
 }

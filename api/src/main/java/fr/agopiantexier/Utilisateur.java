@@ -1,20 +1,23 @@
 package fr.agopiantexier;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "users")
-public class Account {
+public class Utilisateur {
 
-    @DatabaseField(id = true)
+    @DatabaseField(generatedId = true)
+    private int id;
+    @DatabaseField(unique = true)
     private String pseudo;
     @DatabaseField
     private String password;
 
-    public Account() {
+    public Utilisateur() {
         // ORMLite needs a no-arg constructor
     }
-    public Account(String name, String password) {
+    public Utilisateur(String name, String password) {
         this.pseudo = pseudo;
         this.password = password;
     }
@@ -24,10 +27,19 @@ public class Account {
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

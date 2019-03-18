@@ -40,6 +40,21 @@ public class GameController {
 
         Inscription inscription = new Inscription();
         inscription.inscription(pseudo, password);
-        //mapper.readValue(ctx.body(), Account.class);
+    };
+
+    public static Handler connexion = ctx -> {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        ObjectReader reader = mapper.reader().forType(Connexion.class);
+        Connexion resp = reader.readValue(ctx.body());
+        pseudo = resp.getPseudo();
+        password = resp.getPassword();
+
+        System.out.println(pseudo);
+        System.out.println(password);
+
+        Utilisateur user = resp.connexion();
+        if (user != null) ctx.json(user);
+        else ctx.status(401).json("{}");
     };
 }

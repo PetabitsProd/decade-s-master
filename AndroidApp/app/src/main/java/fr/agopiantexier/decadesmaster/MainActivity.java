@@ -1,19 +1,24 @@
 package fr.agopiantexier.decadesmaster;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.facebook.stetho.json.ObjectMapper;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -22,7 +27,11 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "OkHttp";
-    private String url = "http://172.20.10.7:7000/";
+    private String url = "http://10.8.110.198:7000/";
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,22 +45,33 @@ public class MainActivity extends AppCompatActivity {
         bConnexion.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View v) {
+
+               JSONObject object = new JSONObject();
+               try {
+                   object.put("pseudo", pseudo.getText().toString());
+                   object.put("password", password.getText().toString());
+               } catch (Exception e){
+               }
+
                OkHttpClient okHttpClient = new OkHttpClient();
+               RequestBody body = RequestBody.create(JSON, object.toString());
                Request request = new Request.Builder()
                        .url(url + "connexion")
+                       .post(body)
                        .build();
                okHttpClient.newCall(request).enqueue(new Callback() {
                    @Override
                    public void onFailure(Call call, IOException e) {
-                       Toast toast = new Toast(getApplicationContext());
-                       toast.setText("Erreur lors de la connexion");
-                       toast.setDuration(Toast.LENGTH_LONG);
-                       toast.show();
                    }
 
                    @Override
                    public void onResponse(Call call, Response response) throws IOException {
-                        gettingStarted();
+                        if (response.isSuccessful()) {
+                            gettingStarted();
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                        } else {
+                        }
                    }
                });
              }
@@ -61,11 +81,17 @@ public class MainActivity extends AppCompatActivity {
         bInscription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("pseudo", pseudo.getText().toString());
+                    object.put("password", password.getText().toString());
+                } catch (Exception e){
+                }
+
+
                 OkHttpClient okHttpClient = new OkHttpClient();
-                RequestBody body = new FormBody.Builder()
-                        .add("pseudo", pseudo.toString())
-                        .add("password", password.toString())
-                        .build();
+                RequestBody body = RequestBody.create(JSON, object.toString());
                 Request request = new Request.Builder()
                         .url(url + "inscription")
                         .post(body)
@@ -73,15 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 okHttpClient.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        /*Toast toast = new Toast(getApplicationContext());
-                        toast.setText("Erreur lors de l'inscription");
-                        toast.setDuration(Toast.LENGTH_LONG);
-                        toast.show();*/
                     }
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
-                        gettingStarted();
                     }
                 });
             }

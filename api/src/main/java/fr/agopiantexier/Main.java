@@ -50,12 +50,13 @@ public class Main {
 
         ConnectionSource source = new JdbcConnectionSource("jdbc:sqlite:"+ dbPath +"DecadesMasterDB.sqlite");
 
-        TableUtils.createTableIfNotExists(source, Account.class);
+        TableUtils.createTableIfNotExists(source, Utilisateur.class);
 
         Javalin app = Javalin.create().start(7000);
 
 
         app.post("/inscription", GameController.inscription);
+        app.post("/connexion", GameController.connexion);
 
       //  app.get("/", ApiConnection::getSpotify2010Response);
 
