@@ -1,5 +1,8 @@
 package fr.agopiantexier;
 
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 import io.javalin.Javalin;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -26,6 +29,7 @@ public class Main {
         //create strings to send in Spotify header
         String clientId = prop.getProperty("clientId");
         String secret = prop.getProperty("secretId");
+        String dbPath = prop.getProperty("dbPath");
         base64 = Base64.getEncoder().encodeToString((clientId+":"+secret).getBytes());
 
         refreshToken(base64);
@@ -44,6 +48,12 @@ public class Main {
         getJsonPlaylists();
         getAllSpotifyResponse();
 
+        ConnectionSource source = new JdbcConnectionSource("jdbc:sqlite:"+ dbPath +"DecadesMasterDB.sqlite");
+
+        TableUtils.createTableIfNotExists(source, Account.class);
+
+
+        app.post("/inscription", GameController.inscription);
 
         Javalin app = Javalin.create().start(7000);
 
