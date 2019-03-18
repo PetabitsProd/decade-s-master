@@ -1,18 +1,15 @@
 package fr.agopiantexier;
 
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import io.javalin.Context;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import javax.swing.plaf.BorderUIResource;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +43,7 @@ public class ApiConnection {
         this.year2010 = year2010;
     }
 
-    public List<String> getYear2000() {
+    public static List<String> getYear2000() {
         return year2000;
     }
 
@@ -54,7 +51,7 @@ public class ApiConnection {
         this.year2000 = year2000;
     }
 
-    public List<String> getYear1990() {
+    public static List<String> getYear1990() {
         return year1990;
     }
 
@@ -62,7 +59,7 @@ public class ApiConnection {
         this.year1990 = year1990;
     }
 
-    public List<String> getYear1980() {
+    public static List<String> getYear1980() {
         return year1980;
     }
 
@@ -70,7 +67,7 @@ public class ApiConnection {
         this.year1980 = year1980;
     }
 
-    public List<String> getYear1970() {
+    public static List<String> getYear1970() {
         return year1970;
     }
 
@@ -154,30 +151,189 @@ public class ApiConnection {
         }
     }
 
-    public static void getSpotifyResponse(Context ctx)throws Exception {
-        getJsonPlaylists();
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        Items test;
-        File file= new File("src/main/resources/PlaylistsFile/playlistId2010.json");
-        for (String s: year2010
-             ) {
-            Request request = new Request.Builder()
-                    .url("https://api.spotify.com/v1/playlists/"+s+"/tracks")
-                    .header("Authorization", "Bearer "+ token)
-                    .get()
-                    .build();
-            try(Response response = client.newCall(request).execute()){
-                String content = response.body().string();
-                ObjectReader reader = mapper.reader().forType(Items.class);
-                test = reader.readValue(content);
-                mapper.writeValue(file, test);
-                ctx.result(mapper.writeValueAsString(test));
-                System.out.println(mapper.writeValueAsString(test));
+    public static void getSpotify2010Response()throws Exception {
+        List<Items> itemsList = new ArrayList<>();
+
+        File file= new File("OutputPlaylistsFile/playlistId2010.json");
+
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+
+            file.createNewFile();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Items items;
+
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for (String s: getYear2010()
+            ) {
+                Request request = new Request.Builder()
+                        .url("https://api.spotify.com/v1/playlists/"+s+"/tracks")
+                        .header("Authorization", "Bearer "+ token)
+                        .get()
+                        .build();
+                try(Response response = client.newCall(request).execute()){
+                    String content = response.body().string();
+                    ObjectReader reader = mapper.reader().forType(Items.class);
+                    items = reader.readValue(content);
+                    itemsList.add(items);
+                }
             }
+            fileWriter.append(mapper.writeValueAsString(itemsList));
+
         }
+
     }
 
+    public static void getSpotify2000Response()throws Exception {
+        List<Items> itemsList = new ArrayList<>();
+
+        File file= new File("OutputPlaylistsFile/playlistId2000.json");
+
+        if(!file.exists()){
+            file.getParentFile().mkdirs();
+
+            file.createNewFile();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Items items;
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            for (String s: getYear2000()
+            ) {
+                Request request = new Request.Builder()
+                        .url("https://api.spotify.com/v1/playlists/"+s+"/tracks")
+                        .header("Authorization", "Bearer "+ token)
+                        .get()
+                        .build();
+                try(Response response = client.newCall(request).execute()){
+                    String content = response.body().string();
+                    ObjectReader reader = mapper.reader().forType(Items.class);
+                    items = reader.readValue(content);
+                    itemsList.add(items);
+                }
+            }
+            fileWriter.append(mapper.writeValueAsString(itemsList));
+
+        }
+
+    }
+
+    public static void getSpotify1990Response()throws Exception {
+        List<Items> itemsList = new ArrayList<>();
+        File file= new File("OutputPlaylistsFile/playlistId1990.json");
+
+
+        if(!file.exists()) {
+            file.getParentFile().mkdirs();
+
+            file.createNewFile();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Items items;
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+            for (String s: getYear1990()
+            ) {
+                Request request = new Request.Builder()
+                        .url("https://api.spotify.com/v1/playlists/"+s+"/tracks")
+                        .header("Authorization", "Bearer "+ token)
+                        .get()
+                        .build();
+                try(Response response = client.newCall(request).execute()){
+                    String content = response.body().string();
+                    ObjectReader reader = mapper.reader().forType(Items.class);
+                    items = reader.readValue(content);
+                    itemsList.add(items);
+                }
+            }
+            fileWriter.append(mapper.writeValueAsString(itemsList));
+
+        }
+
+
+    }
+
+    public static void getSpotify1980Response()throws Exception {
+        List<Items> itemsList = new ArrayList<>();
+
+        File file= new File("OutputPlaylistsFile/playlistId1980.json");
+        if(!file.exists()){
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Items items;
+            file.getParentFile().mkdirs();
+
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for (String s: getYear1980()
+            ) {
+                Request request = new Request.Builder()
+                        .url("https://api.spotify.com/v1/playlists/"+s+"/tracks")
+                        .header("Authorization", "Bearer "+ token)
+                        .get()
+                        .build();
+                try(Response response = client.newCall(request).execute()){
+                    String content = response.body().string();
+                    ObjectReader reader = mapper.reader().forType(Items.class);
+                    items = reader.readValue(content);
+                    itemsList.add(items);
+                }
+            }
+            fileWriter.append(mapper.writeValueAsString(itemsList));
+        }
+
+
+
+
+    }
+
+    public static void getSpotify1970Response()throws Exception {
+
+        List<Items> itemsList = new ArrayList<>();
+        File file= new File("OutputPlaylistsFile/playlist1970.json");
+        if(!file.exists()){
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Items items;
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            for (String s: getYear1970()
+            ) {
+                Request request = new Request.Builder()
+                        .url("https://api.spotify.com/v1/playlists/"+s+"/tracks")
+                        .header("Authorization", "Bearer "+ token)
+                        .get()
+                        .build();
+                try(Response response = client.newCall(request).execute()){
+                    String content = response.body().string();
+                    ObjectReader reader = mapper.reader().forType(Items.class);
+                    items = reader.readValue(content);
+                    itemsList.add(items);
+                }
+            }
+            fileWriter.append(mapper.writeValueAsString(itemsList));
+
+            bufferedWriter.close();
+        }
+
+
+
+    }
+
+    public static void getAllSpotifyResponse() throws Exception{
+        getSpotify2010Response();
+        getSpotify2000Response();
+        getSpotify1990Response();
+        getSpotify1980Response();
+        getSpotify1970Response();
+    }
 
 
 }

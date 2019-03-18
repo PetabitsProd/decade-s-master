@@ -1,12 +1,11 @@
 package fr.agopiantexier;
 
 import io.javalin.Javalin;
-
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
 
-import static fr.agopiantexier.ApiConnection.refreshToken;
+import static fr.agopiantexier.ApiConnection.*;
 
 
 public class Main {
@@ -41,10 +40,14 @@ public class Main {
         }, period, period);
 
 
+        //getResponse from Spotify
+        getJsonPlaylists();
+        getAllSpotifyResponse();
+
 
         Javalin app = Javalin.create().start(7000);
 
-        app.get("/", ApiConnection::getSpotifyResponse);
+      //  app.get("/", ApiConnection::getSpotify2010Response);
 
     }
 
