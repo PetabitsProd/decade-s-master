@@ -70,3 +70,6 @@ api/config\.properties
 api/.idea
 
 api/OutputPlaylistsFile
+api/DecadesMasterDB.sqlite-journal
+
+api/DecadesMasterDB\.sqlite

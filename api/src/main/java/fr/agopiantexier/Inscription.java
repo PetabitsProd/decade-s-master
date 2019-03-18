@@ -36,7 +36,7 @@ public class Inscription {
     public void inscription(String pseudo, String password) throws IOException, SQLException {
         //ctx.result("Inscription");
 
-        System.out.println();
+        System.out.println(pseudo + " et " + password);
 
         Properties properties = new Properties();
         InputStream input = null;
@@ -51,8 +51,8 @@ public class Inscription {
                         , Account.class);
         System.out.println(accountDao.countOf());
         Account account = new Account();
-        account.setPseudo(this.pseudo);
-        account.setPassword(this.password);
+        account.setPseudo(pseudo);
+        account.setPassword(password);
         accountDao.create(account);
     }
 }

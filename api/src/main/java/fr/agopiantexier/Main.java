@@ -52,10 +52,10 @@ public class Main {
 
         TableUtils.createTableIfNotExists(source, Account.class);
 
+        Javalin app = Javalin.create().start(7000);
+
 
         app.post("/inscription", GameController.inscription);
-
-        Javalin app = Javalin.create().start(7000);
 
       //  app.get("/", ApiConnection::getSpotify2010Response);
 
