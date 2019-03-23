@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/playlistName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom de la playlist"
+ />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="musique en cours"
+        android:id="@+id/nbMusic"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="nombre de joueur dans la room"
+        android:id="@+id/nbPlayer"/>
+</LinearLayout>

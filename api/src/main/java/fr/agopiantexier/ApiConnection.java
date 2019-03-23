@@ -295,7 +295,7 @@ public class ApiConnection {
     public static void getSpotify1970Response()throws Exception {
 
         List<Items> itemsList = new ArrayList<>();
-        File file= new File("OutputPlaylistsFile/playlist1970.json");
+        File file= new File("OutputPlaylistsFile/playlistId1970.json");
         if(!file.exists()){
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.*;
 
 import static fr.agopiantexier.ApiConnection.*;
-import static fr.agopiantexier.SpotifyFinalPlaylists.getReal2010Playlist;
 
 
 public class Main {
@@ -48,7 +47,6 @@ public class Main {
         //getResponse from Spotify
         getJsonPlaylists();
         getAllSpotifyResponse();
-        getReal2010Playlist();
 
         ConnectionSource source = new JdbcConnectionSource("jdbc:sqlite:"+ dbPath +"DecadesMasterDB.sqlite");
 
@@ -57,6 +55,8 @@ public class Main {
 
 
         app.post("/inscription", GameController.inscription);
+
+        app.get("/playlist", PlaylistController::getPlaylist);
 
 
       //  app.get("/", ApiConnection::getSpotify2010Response);

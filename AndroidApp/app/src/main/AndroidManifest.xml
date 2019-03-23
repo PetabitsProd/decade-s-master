@@ -19,9 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PlaylistActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".GettingStarted">
         </activity>
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
