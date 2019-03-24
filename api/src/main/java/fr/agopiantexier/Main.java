@@ -53,7 +53,6 @@ public class Main {
         TableUtils.createTableIfNotExists(source, Utilisateur.class);
         Javalin app = Javalin.create().start(7000);
 
-        Javalin app = Javalin.create().start(7000);
 
 
         app.post("/inscription", GameController.inscription);

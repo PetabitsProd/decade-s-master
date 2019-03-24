@@ -85,34 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             loginTry();
-
-
-
-
-            /*OkHttpClient okHttpClient = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
-
-            okHttpClient.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    Log.e(TAG, String.valueOf(e));
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    Log.i(TAG, String.valueOf(response));
-
-                }
-
-            });*/
         }
-    }
-
-    public void gettingStarted() {
-        Intent intent = new Intent(this, GettingStarted.class);
-        startActivity(intent);
     }
 
     public void loginTry() {
@@ -210,25 +183,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG, String.valueOf(e));
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.i(TAG, String.valueOf(response));
-
-            }
-
-        });
-
+        getAllPlaylist(this);
 
     }
 
