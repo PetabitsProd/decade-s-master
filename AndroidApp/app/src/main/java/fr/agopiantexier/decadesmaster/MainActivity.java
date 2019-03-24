@@ -10,12 +10,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.facebook.stetho.json.ObjectMapper;
 
 import org.json.JSONObject;
 
-import java.io.IOException;
 
+import com.facebook.stetho.Stetho;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+
+import java.io.IOException;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+
+import fr.agopiantexier.decadesmaster.database.DatabaseHelper;
+import fr.agopiantexier.decadesmaster.model.Playlist;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -24,15 +32,22 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static fr.agopiantexier.decadesmaster.SpotifyResponse.createFile;
+import static fr.agopiantexier.decadesmaster.SpotifyResponse.getAllPlaylist;
+
 public class MainActivity extends AppCompatActivity {
 
-    private String TAG = "OkHttp";
+    private String TAG = "MainActivity";
     private String url = "http://192.168.2.11:7000/";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
+    private  static Properties prop = new Properties();
+    private static String dbPath = prop.getProperty("dbPath");
+    private DatabaseHelper databaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Stetho.initializeWithDefaults(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -108,6 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         final Button bConnexion = findViewById(R.id.connexion);
+        try{
+            createFile(this);
+
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         bConnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,5 +209,34 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e(TAG, String.valueOf(e));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Log.i(TAG, String.valueOf(response));
+
+            }
+
+        });
+
+        getAllPlaylist(this);
+
     }
+
+    public void gettingStarted() {
+        Intent intent = new Intent(this, PlaylistActivity.class);
+        startActivity(intent);
+    }
+
+
 }

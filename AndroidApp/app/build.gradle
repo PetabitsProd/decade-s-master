@@ -20,6 +20,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 dependencies {
@@ -31,4 +32,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.squareup.okhttp3:okhttp:3.13.1'
     implementation 'com.facebook.stetho:stetho:1.5.1'
+    // https://mvnrepository.com/artifact/com.j256.ormlite/ormlite-android
+    implementation 'com.j256.ormlite:ormlite-android:5.1'
+    implementation 'com.j256.ormlite:ormlite-jdbc:5.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.8'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+
+
+
 }

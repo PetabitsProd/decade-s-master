@@ -12,7 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:label="1">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PlaylistActivity" android:label="2">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GameActivity" android:label="3">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,6 +36,8 @@
 
         <activity android:name=".GettingStarted">
         </activity>
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>
