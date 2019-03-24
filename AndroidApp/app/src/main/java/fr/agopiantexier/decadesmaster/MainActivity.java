@@ -27,10 +27,8 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private String TAG = "OkHttp";
-    private String url = "http://10.8.110.198:7000/";
+    private String url = "http://192.168.2.11:7000/";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
     @Override
@@ -38,43 +36,120 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        if (sharedPreferences.contains("pseudo") && sharedPreferences.contains("password")) {
+
+            JSONObject myPrefObject = new JSONObject();
+
+            try {
+                myPrefObject.put("pseudo", sharedPreferences.getString("pseudo", null));
+                myPrefObject.put("password", sharedPreferences.getString("password", null));
+            } catch (Exception e){
+            }
+
+            OkHttpClient okHttpClient = new OkHttpClient();
+            RequestBody body = RequestBody.create(JSON, myPrefObject.toString());
+            Request request = new Request.Builder()
+                    .url(url + "connexion")
+                    .post(body)
+                    .build();
+            okHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    loginTry();
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        gettingStarted();
+                    }
+                }
+            });
+
+        } else {
+            loginTry();
+
+
+
+
+            /*OkHttpClient okHttpClient = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url(url)
+                    .build();
+
+            okHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e(TAG, String.valueOf(e));
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    Log.i(TAG, String.valueOf(response));
+
+                }
+
+            });*/
+        }
+    }
+
+    public void gettingStarted() {
+        Intent intent = new Intent(this, GettingStarted.class);
+        startActivity(intent);
+    }
+
+    public void loginTry() {
         final EditText pseudo = findViewById(R.id.pseudo);
         final EditText password = findViewById(R.id.password);
 
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
         final Button bConnexion = findViewById(R.id.connexion);
         bConnexion.setOnClickListener(new View.OnClickListener() {
-           @Override
+            @Override
             public void onClick(View v) {
 
-               JSONObject object = new JSONObject();
-               try {
-                   object.put("pseudo", pseudo.getText().toString());
-                   object.put("password", password.getText().toString());
-               } catch (Exception e){
-               }
 
-               OkHttpClient okHttpClient = new OkHttpClient();
-               RequestBody body = RequestBody.create(JSON, object.toString());
-               Request request = new Request.Builder()
-                       .url(url + "connexion")
-                       .post(body)
-                       .build();
-               okHttpClient.newCall(request).enqueue(new Callback() {
-                   @Override
-                   public void onFailure(Call call, IOException e) {
-                   }
+                JSONObject object = new JSONObject();
 
-                   @Override
-                   public void onResponse(Call call, Response response) throws IOException {
+                try {
+                    object.put("pseudo", pseudo.getText().toString());
+                    object.put("password", password.getText().toString());
+                } catch (Exception e) {
+                }
+
+
+                OkHttpClient okHttpClient = new OkHttpClient();
+                RequestBody body = RequestBody.create(JSON, object.toString());
+                Request request = new Request.Builder()
+                        .url(url + "connexion")
+                        .post(body)
+                        .build();
+                okHttpClient.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
                         if (response.isSuccessful()) {
-                            gettingStarted();
                             SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("pseudo", pseudo.getText().toString());
+                            editor.putString("password", password.getText().toString());
+                            editor.apply();
+                            gettingStarted();
 
+                            Log.i("Test", sharedPreferences.getString("pseudo", null));
+                            Log.i("Test", sharedPreferences.getString("password", null));
                         } else {
                         }
-                   }
-               });
-             }
+                    }
+                });
+
+            }
         });
 
         final Button bInscription = findViewById(R.id.inscription);
@@ -86,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     object.put("pseudo", pseudo.getText().toString());
                     object.put("password", password.getText().toString());
-                } catch (Exception e){
+                } catch (Exception e) {
                 }
 
 
@@ -103,34 +178,14 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("pseudo", pseudo.getText().toString());
+                        editor.putString("password", password.getText().toString());
+                        editor.apply();
+                        gettingStarted();
                     }
                 });
             }
         });
-
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e(TAG, String.valueOf(e));
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                Log.i(TAG, String.valueOf(response));
-
-            }
-
-        });
-    }
-
-    public void gettingStarted() {
-        Intent intent = new Intent(this, GettingStarted.class);
-        startActivity(intent);
     }
 }
