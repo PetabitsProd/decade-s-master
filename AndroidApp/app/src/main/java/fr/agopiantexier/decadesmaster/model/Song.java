@@ -7,7 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Song {
     public Song(){}
 
-    public Song(Playlist idPlaylist, String url, String name){
+    public Song(Integer idPlaylist, String url, String name){
         this.idPlaylist = idPlaylist;
         this.url = url;
         this.name = name;
@@ -22,11 +22,11 @@ public class Song {
         this.id = id;
     }
 
-    @DatabaseField(unique = true, generatedId = true)
+    @DatabaseField(unique = true, id = true)
     private long id;
 
     @DatabaseField(columnName = "idPlaylist", canBeNull = false, foreign = true, foreignColumnName = "id", foreignAutoCreate = true)
-    private Playlist idPlaylist;
+    private Integer idPlaylist;
 
     @DatabaseField(columnName = "url", canBeNull = false)
     private String url;
@@ -34,11 +34,11 @@ public class Song {
     @DatabaseField(columnName = "name", canBeNull = false)
     private String name;
 
-    public Playlist getIdPlaylist() {
+    public Integer getIdPlaylist() {
         return idPlaylist;
     }
 
-    public void setIdPlaylist(Playlist idPlaylist) {
+    public void setIdPlaylist(Integer idPlaylist) {
         this.idPlaylist = idPlaylist;
     }
 

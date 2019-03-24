@@ -10,8 +10,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 
+import com.facebook.stetho.Stetho;
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
+import com.j256.ormlite.support.ConnectionSource;
+
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
 import fr.agopiantexier.decadesmaster.database.DatabaseHelper;
 import fr.agopiantexier.decadesmaster.model.Playlist;
@@ -23,6 +28,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static fr.agopiantexier.decadesmaster.SpotifyResponse.createFile;
 import static fr.agopiantexier.decadesmaster.SpotifyResponse.getAllPlaylist;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Stetho.initializeWithDefaults(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -46,7 +53,13 @@ public class MainActivity extends AppCompatActivity {
         final EditText password = findViewById(R.id.password);
 
         final Button bConnexion = findViewById(R.id.connexion);
+        try{
+            createFile(this);
 
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
         bConnexion.setOnClickListener(new View.OnClickListener() {
            @Override
             public void onClick(View v) {
@@ -120,20 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        getAllPlaylist();
-
-        databaseHelper = new DatabaseHelper( this );
-        Playlist playlist2010 = new Playlist("year2010");
-        databaseHelper.insertPlaylist(playlist2010);
-        Playlist playlist2000 = new Playlist("year2000");
-        databaseHelper.insertPlaylist(playlist2000);
-        Playlist playlist1990 = new Playlist("year1990");
-        databaseHelper.insertPlaylist(playlist1990);
-        Playlist playlist1980 = new Playlist("year1980");
-        databaseHelper.insertPlaylist(playlist1980);
-        Playlist playlist1970 = new Playlist("year1970");
-        databaseHelper.insertPlaylist(playlist1970);
-
+        getAllPlaylist(this);
 
     }
 

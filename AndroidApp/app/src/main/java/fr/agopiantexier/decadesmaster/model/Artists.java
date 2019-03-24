@@ -10,7 +10,7 @@ public class Artists {
         this.name = name;
     }
 
-    @DatabaseField(unique = true, generatedId = true)
+    @DatabaseField(unique = true, id = true)
     private int id;
 
     @DatabaseField(columnName = "name", canBeNull = false)

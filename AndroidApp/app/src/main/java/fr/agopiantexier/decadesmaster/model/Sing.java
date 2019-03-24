@@ -28,7 +28,7 @@ public class Sing {
         this.artistId = idArtist;
     }
 
-    @DatabaseField(unique = true, generatedId = true)
+    @DatabaseField(unique = true, id = true)
     private long id;
 
     public long getId() {
