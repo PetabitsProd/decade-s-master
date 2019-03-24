@@ -50,6 +50,32 @@ public class GameActivity extends Activity{
             mediaPlayer.setDataSource(url.get(0));
             mediaPlayer.prepare(); // might take long! (for buffering, etc)
             mediaPlayer.start();
+
+
+
+/* pour plusieur son
+            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                Integer fileCounter = 0;
+
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    if(fileCounter == url.size() - 1){
+                        fileCounter = 0;
+                    }
+                    if(fileCounter < url.size() -1){
+                        try{
+                            mediaPlayer.setDataSource(url.get(0));
+                            mediaPlayer.prepare(); // might take long! (for buffering, etc)
+                            mediaPlayer.start();
+                        }
+                        catch(Exception e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            });*/
+
         }
         catch(Exception e){
             e.printStackTrace();
