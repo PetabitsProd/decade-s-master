@@ -229,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        getAllPlaylist(this);
 
     }
 

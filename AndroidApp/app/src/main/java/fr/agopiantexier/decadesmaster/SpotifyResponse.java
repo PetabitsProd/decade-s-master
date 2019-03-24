@@ -112,7 +112,6 @@ public class SpotifyResponse {
                 .get()
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
-            AllPlaylists allPlaylists;
 
             @Override
             public void onFailure(Call call, IOException e) {
@@ -122,6 +121,8 @@ public class SpotifyResponse {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 FileOutputStream outputStream;
+                AllPlaylists allPlaylists;
+
                 Items items;
                 String content = response.body().string();
                 ObjectReader reader = mapper.reader().forType(AllPlaylists.class);
@@ -169,17 +170,16 @@ public class SpotifyResponse {
 
         for (Integer i = 0; i < SpotifyResponse.getItems1970().size(); i++) {
             Items a = SpotifyResponse.getItems1970().get(i);
-            for (Integer j = 0; j < a.getItems().size(); i++) {
+            for (Integer j = 0; j < a.getItems().size(); j++) {
                 item.add(a.getItems().get(j));
 
             }
 
+
         }
 
-        Collections.shuffle(item);
-        List<Item> toBePlay1970 = item.subList(1, 20);
 
-        return toBePlay1970;
+        return item;
     }
 
 }

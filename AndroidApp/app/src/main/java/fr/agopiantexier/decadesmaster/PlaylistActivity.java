@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static fr.agopiantexier.decadesmaster.SpotifyResponse.getAllPlaylist;
+
 
 public class PlaylistActivity extends Activity {
     private static final String TAG = "PlaylistActivity";
@@ -21,6 +23,8 @@ public class PlaylistActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getAllPlaylist(this);
+
         setContentView(R.layout.playlists_page);
         list.add("Année 2010");
         list.add("Année 2000");
