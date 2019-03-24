@@ -71,6 +71,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
+
     public void insertPlaylist ( Playlist playlist ) {
         try {
             Dao<Playlist, Integer> dao = getDao( Playlist.class );
@@ -79,6 +80,18 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         } catch( Exception exception ) {
             Log.e( "DATABASE", "Can't insert playlkst into Database", exception );
         }
+    }
+
+
+    public void deleteAllPlaylist(){
+        try {
+            Dao<Playlist, Integer> dao = getDao( Playlist.class );
+            TableUtils.clearTable(connectionSource, Playlist.class);
+        }catch (Exception e ){
+            Log.e( "DATABASE", "Can't delete playlkst into Database", e );
+
+        }
+
     }
 
 }
